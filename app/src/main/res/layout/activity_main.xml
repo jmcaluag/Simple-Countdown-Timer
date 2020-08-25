@@ -20,14 +20,24 @@
             tools:text="10:00" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@+id/start_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/start_button" />
+
+        <Button
+            android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/reset_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_display" />
+            app:layout_constraintTop_toBottomOf="@+id/time_display"
+            tools:text="Start" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

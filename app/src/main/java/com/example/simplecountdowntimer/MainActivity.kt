@@ -19,9 +19,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        binding.button.text = "Start"
+        binding.startButton.text = "Start"
 
-        binding.button.setOnClickListener { startStop(it) }
+        binding.startButton.setOnClickListener { startStop(it) }
+
+        binding.resetButton.setOnClickListener { resetTime(it) }
 
         updateTimer()
     }
@@ -30,11 +32,13 @@ class MainActivity : AppCompatActivity() {
         if(timerRunning) {
             timerRunning = false
             pauseTimer()
-            binding.button.text = "Start"
+            binding.startButton.text = "Start"
         } else {
             timerRunning = true
             startTimer()
-            binding.button.text = "Pause"
+            binding.startButton.text = "Pause"
+            binding.resetButton.visibility = View.VISIBLE
+
         }
     }
 
@@ -51,6 +55,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun pauseTimer() {
         countDownTimer.cancel()
+    }
+
+    private fun resetTime(view: View) {
+        timeLeftInMilliseconds = 600000
+        updateTimer()
+        binding.resetButton.visibility = View.GONE
     }
 
     private fun updateTimer() {
