@@ -13,18 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private var timeLeftInMilliseconds: Long = 600000 //10 minutes
     private var timerRunning: Boolean = false // Initial state: timer is NOT running
-    val timer = object : CountDownTimer(timeLeftInMilliseconds, 1000) {
-        override fun onTick(p0: Long) {
-            timeLeftInMilliseconds = p0
-            updateTimer()
-        }
-
-        override fun onFinish() {
-            // Not needed
-        }
-
-    }
-
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private fun startStop(view: View) {
         if(timerRunning) {
             timerRunning = false
-            stopTimer()
+            pauseTimer()
             binding.button.text = "Start"
         } else {
             timerRunning = true
@@ -50,11 +39,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        timer.start()
+        countDownTimer = object : CountDownTimer(timeLeftInMilliseconds, 1000) {
+            override fun onTick(p0: Long) {
+                timeLeftInMilliseconds = p0
+                updateTimer()
+            }
+
+            override fun onFinish() {} // Not needed just yet
+        }.start()
     }
 
-    private fun stopTimer() {
-        timer.cancel()
+    private fun pauseTimer() {
+        countDownTimer.cancel()
     }
 
     private fun updateTimer() {
