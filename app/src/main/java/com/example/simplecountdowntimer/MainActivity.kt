@@ -1,9 +1,11 @@
 package com.example.simplecountdowntimer
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import com.example.simplecountdowntimer.databinding.ActivityMainBinding
 
@@ -11,8 +13,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private var timeLeftInMilliseconds: Long = 600000 //10 minutes
+    private var defaultTime: Long = 600000 //10 minutes
+    private var timeLeft: Long = 0
     private var timerRunning: Boolean = false // Initial state: timer is NOT running
+    private var userSetTime: Boolean = false
+    private var userTime: Long = 0
     private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,11 +26,26 @@ class MainActivity : AppCompatActivity() {
 
         binding.startButton.text = "Start"
 
+        binding.setTimer.setOnClickListener { setTimer(it) }
+
         binding.startButton.setOnClickListener { startStop(it) }
 
         binding.resetButton.setOnClickListener { resetTime(it) }
 
-        updateTimer()
+        timeLeft = defaultTime
+
+        updateTimer(timeLeft)
+    }
+
+    private fun setTimer(view: View) {
+        userSetTime = true
+        var setTime: String = binding.setTimer.text.toString()
+        userTime = setTime.toLong() * 60000
+        timeLeft = userTime
+        updateTimer(timeLeft)
+        binding.setTimer.setText("")
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun startStop(view: View) {
@@ -38,18 +58,18 @@ class MainActivity : AppCompatActivity() {
             startTimer()
             binding.startButton.text = "Pause"
             binding.resetButton.visibility = View.VISIBLE
-
         }
     }
 
     private fun startTimer() {
-        countDownTimer = object : CountDownTimer(timeLeftInMilliseconds, 1000) {
+        countDownTimer = object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(p0: Long) {
-                timeLeftInMilliseconds = p0
-                updateTimer()
+                timeLeft = p0
+                updateTimer(timeLeft)
             }
 
             override fun onFinish() {} // Not needed just yet
+
         }.start()
     }
 
@@ -58,14 +78,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetTime(view: View) {
-        timeLeftInMilliseconds = 600000
-        updateTimer()
+        countDownTimer.cancel()
+
+        if (userSetTime) {
+            timeLeft = userTime
+        } else {
+            timeLeft = defaultTime
+        }
+        updateTimer(timeLeft)
+        timerRunning = false
+        binding.startButton.text = "Start"
         binding.resetButton.visibility = View.GONE
     }
 
-    private fun updateTimer() {
-        var minutes = timeLeftInMilliseconds / 60000
-        var seconds = timeLeftInMilliseconds % 60000 / 1000
+    private fun updateTimer(time: Long) {
+        var minutes = time / 60000
+        var seconds = time % 60000 / 1000
 
         var timeLeft: String = ""
 
