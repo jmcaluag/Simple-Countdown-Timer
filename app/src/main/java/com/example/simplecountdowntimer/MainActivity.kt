@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.resetButton.setOnClickListener { resetTime(it) }
 
+        //TODO: Implement "tap out of EditText" to clear focus and hide keyboard when tapping/clicking on the root view or just outside the EditText view.
+
         timeLeft = defaultTime
 
         updateTimer(timeLeft)
@@ -48,7 +51,8 @@ class MainActivity : AppCompatActivity() {
             binding.setTimer.text.clear()
         }
 
-        //TODO: Fix keyboard focus
+        binding.setTimer.clearFocus()
+
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
