@@ -38,12 +38,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setTimer(view: View) {
-        userSetTime = true
-        var setTime: String = binding.setTimer.text.toString()
-        userTime = setTime.toLong() * 60000
-        timeLeft = userTime
-        updateTimer(timeLeft)
-        binding.setTimer.setText("")
+
+        if(binding.setTimer.text.isNotEmpty()) {
+            userSetTime = true
+            var setTime: String = binding.setTimer.text.toString()
+            userTime = setTime.toLong() * 60000
+            timeLeft = userTime
+            updateTimer(timeLeft)
+            binding.setTimer.text.clear()
+        }
+
+        //TODO: Fix keyboard focus
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
