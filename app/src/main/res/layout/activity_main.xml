@@ -12,12 +12,24 @@
             android:id="@+id/time_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="70sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="@+id/countdown_ProgressBar"
+            app:layout_constraintEnd_toEndOf="@+id/countdown_ProgressBar"
+            app:layout_constraintStart_toStartOf="@+id/countdown_ProgressBar"
+            app:layout_constraintTop_toTopOf="@+id/countdown_ProgressBar"
             tools:text="10:00" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/countdown_ProgressBar"
+            android:layout_width="310dp"
+            android:layout_height="310dp"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/progress_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:progress="1" />
 
         <Button
             android:id="@+id/reset_button"
@@ -33,10 +45,11 @@
             android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/reset_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_display"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8"
             tools:text="Start" />
 
         <EditText

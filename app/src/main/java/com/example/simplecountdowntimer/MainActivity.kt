@@ -16,12 +16,13 @@ import com.example.simplecountdowntimer.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private var defaultTime: Long = 600000 //10 minutes
-    private var timeLeft: Long = 0
-    private var timerRunning: Boolean = false // Initial state: timer is NOT running
-    private var userSetTime: Boolean = false
-    private var userTime: Long = 0
+    private var progressPercentage = 0
+    private var defaultTime: Long = 30000 // Default time at start up
+    private var timeLeft: Long = 0 // in milliseconds
+    private var referenceTime: Long = 0 // Used for progress bar.
+    private var timerRunning: Boolean = false // Initial state: timer is NOT running.
+    private var userSetTime: Boolean = false // Indicates if the user set a time or not.
+    private var userTime: Long = 0 // User set time in minutes.
     private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.root.setOnClickListener { resetFocus(it) }
 
         timeLeft = defaultTime
+        referenceTime = defaultTime
 
         updateTimer(timeLeft)
     }
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             var setTime: String = binding.setTimer.text.toString()
             userTime = setTime.toLong() * 60000
             timeLeft = userTime
+            referenceTime = userTime
             updateTimer(timeLeft)
             binding.setTimer.text.clear()
         }
@@ -103,7 +106,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             timeLeft = defaultTime
         }
+
         updateTimer(timeLeft)
+
         timerRunning = false
         binding.startButton.text = "Start"
         binding.resetButton.visibility = View.GONE
@@ -114,23 +119,35 @@ class MainActivity : AppCompatActivity() {
         var minutes = time / 60000
         var seconds = time % 60000 / 1000
 
-        var timeLeft: String = ""
+        var timeLeftDisplay: String = ""
 
         if (minutes < 10) {
-            timeLeft += "0"
+            timeLeftDisplay += "0"
         }
-        timeLeft += "${minutes}:"
-        if (seconds < 10) {
-            timeLeft += "0"
-        }
-        timeLeft += seconds
 
-        binding.timeDisplay.text = timeLeft
+        timeLeftDisplay += "${minutes}:"
+
+        if (seconds < 10) {
+            timeLeftDisplay += "0"
+        }
+
+        timeLeftDisplay += seconds
+
+        binding.timeDisplay.text = timeLeftDisplay
+        updateProgressCircle(time)
 
         if (minutes == 0L && seconds == 0L) {
             finishAlert()
             resetTime()
         }
+    }
+
+    //TODO: Figure out formula/expression to update the progress circle
+
+    private fun updateProgressCircle(time: Long) {
+        var timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
+        var progressPercentage: Double = timeDifference / referenceTime.toDouble() * 100
+        binding.countdownProgressBar.progress = progressPercentage.toInt()
     }
 
     private fun finishAlert() {
@@ -139,6 +156,4 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id -> })
         builder.show()
     }
-
-
 }
