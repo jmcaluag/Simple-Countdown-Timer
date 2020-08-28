@@ -33,11 +33,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.resetButton.setOnClickListener { resetTime(it) }
 
-        //TODO: Implement "tap out of EditText" to clear focus and hide keyboard when tapping/clicking on the root view or just outside the EditText view.
+        binding.root.setOnClickListener { resetFocus(it) }
 
         timeLeft = defaultTime
 
         updateTimer(timeLeft)
+    }
+
+    private fun resetFocus (view: View) {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        binding.setTimer.clearFocus()
     }
 
     private fun setTimer(view: View) {
