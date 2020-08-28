@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.simplecountdowntimer.databinding.ActivityMainBinding
 
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.startButton.setOnClickListener { startStop(it) }
 
-        binding.resetButton.setOnClickListener { resetTime(it) }
+        binding.resetButton.setOnClickListener { resetTime() }
 
         binding.root.setOnClickListener { resetFocus(it) }
 
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         countDownTimer.cancel()
     }
 
-    private fun resetTime(view: View) {
+    private fun resetTime() {
         countDownTimer.cancel()
 
         if (userSetTime) {
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateTimer(time: Long) {
+
         var minutes = time / 60000
         var seconds = time % 60000 / 1000
 
@@ -122,6 +124,16 @@ class MainActivity : AppCompatActivity() {
         timeLeft += seconds
 
         binding.timeDisplay.text = timeLeft
+
+        if (minutes == 0L && seconds == 0L) {
+            finishAlert()
+            resetTime()
+        }
+    }
+
+    private fun finishAlert() {
+        val text = "Time's up!"
+        Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
     }
 
 
