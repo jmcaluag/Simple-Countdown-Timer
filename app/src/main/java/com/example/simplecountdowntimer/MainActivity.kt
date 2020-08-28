@@ -1,6 +1,7 @@
 package com.example.simplecountdowntimer
 
 import android.content.Context
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.simplecountdowntimer.databinding.ActivityMainBinding
 
@@ -132,8 +134,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun finishAlert() {
-        val text = "Time's up!"
-        Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Time's up!")
+        builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id -> })
+        builder.show()
     }
 
 
