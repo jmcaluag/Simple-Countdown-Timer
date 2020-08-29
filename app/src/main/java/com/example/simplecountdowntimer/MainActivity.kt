@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.simplecountdowntimer.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -137,16 +138,17 @@ class MainActivity : AppCompatActivity() {
         updateProgressCircle(time)
 
         if (minutes == 0L && seconds == 0L) {
+
+            Timer("schedule", )
+
             finishAlert()
             resetTime()
         }
     }
 
-    //TODO: Figure out formula/expression to update the progress circle
-
     private fun updateProgressCircle(time: Long) {
         var timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
-        var progressPercentage: Double = timeDifference / referenceTime.toDouble() * 100
+        var progressPercentage: Double = timeDifference / referenceTime.toDouble() * 100 // converts time difference into a percentage for progress bar
         binding.countdownProgressBar.progress = progressPercentage.toInt()
     }
 
