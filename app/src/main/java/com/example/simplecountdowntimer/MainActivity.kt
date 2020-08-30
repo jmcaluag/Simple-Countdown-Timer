@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateProgressBar(timeLeftMilliseconds: Long) {
-        //TODO: Increase percentage on first second countdown. Example: If set for 1 minute, progress bar increase on the 58th second instead of 59.
+        //TODO: Increase precision of the progress bar
         val timeLeftSeconds = timeLeftMilliseconds / 1000
         val referenceTimeSeconds = referenceTime / 1000
         val difference = referenceTimeSeconds - timeLeftSeconds
