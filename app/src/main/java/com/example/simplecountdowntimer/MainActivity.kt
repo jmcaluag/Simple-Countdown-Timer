@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         if(binding.setTimer.text.isNotEmpty()) {
             userSetTime = true
-            var setTime: String = binding.setTimer.text.toString()
+            val setTime: String = binding.setTimer.text.toString()
             userTime = setTime.toLong() * 60000
             timeLeft = userTime
             referenceTime = userTime
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun startStop(view: View) {
+    private fun startStop() {
         if(timerRunning) {
             timerRunning = false
             pauseTimer()
@@ -117,10 +117,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateTimer(time: Long) {
         updateProgressCircle(time)
 
-        var minutes = time / 60000
-        var seconds = time % 60000 / 1000
+        val minutes = time / 60000
+        val seconds = time % 60000 / 1000
 
-        var timeLeftDisplay: String = ""
+        var timeLeftDisplay = ""
 
         if (minutes < 10) {
             timeLeftDisplay += "0"
@@ -147,10 +147,12 @@ class MainActivity : AppCompatActivity() {
 
         //TODO: Increase percentage on first second countdown. Example: If set for 1 minute, progress bar increase on the 58th second instead of 59.
 
-        var timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
-        var progressPercentage: Double = timeDifference / referenceTime.toDouble() * 1000 // converts time difference into a percentage for progress bar
+        val timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
+        val progressPercentage: Double = timeDifference / referenceTime.toDouble() * 1000 // converts time difference into a percentage for progress bar
 
         binding.countdownProgressBar.progress = progressPercentage.toInt()
+
+        // Testing git branch and checkout changes
     }
 
     private fun finishAlert() {
