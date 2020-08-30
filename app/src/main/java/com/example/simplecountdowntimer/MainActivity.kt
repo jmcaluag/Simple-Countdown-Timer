@@ -27,13 +27,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        binding.countdownProgressBar.max = 1000
-
         binding.startButton.text = "Start"
+
+        binding.percentageIndicator.text = "0"
 
         binding.setTimer.setOnClickListener { setTimer(it) }
 
-        binding.startButton.setOnClickListener { startStop(it) }
+        binding.startButton.setOnClickListener { startStop() }
 
         binding.resetButton.setOnClickListener { resetTime() }
 
@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         countDownTimer = object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(p0: Long) {
                 timeLeft = p0
+                onePercent++
                 updateTimer(timeLeft)
             }
 
@@ -112,6 +113,9 @@ class MainActivity : AppCompatActivity() {
         timerRunning = false
         binding.startButton.text = "Start"
         binding.resetButton.visibility = View.GONE
+        onePercent = 0
+        binding.percentageIndicator.text = onePercent.toString()
+        updateProgressCircle(timeLeft)
     }
 
     private fun updateTimer(time: Long) {
@@ -135,6 +139,7 @@ class MainActivity : AppCompatActivity() {
         timeLeftDisplay += seconds
 
         binding.timeDisplay.text = timeLeftDisplay
+        binding.percentageIndicator.text = onePercent.toString()
 
         if (minutes == 0L && seconds == 0L) {
             updateProgressCircle(0)
@@ -147,12 +152,10 @@ class MainActivity : AppCompatActivity() {
 
         //TODO: Increase percentage on first second countdown. Example: If set for 1 minute, progress bar increase on the 58th second instead of 59.
 
-        val timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
-        val progressPercentage: Double = timeDifference / referenceTime.toDouble() * 1000 // converts time difference into a percentage for progress bar
+//        val timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
+//        val progressPercentage: Double = timeDifference / referenceTime.toDouble() * 1000 // converts time difference into a percentage for progress bar
 
-        binding.countdownProgressBar.progress = progressPercentage.toInt()
-
-        // Testing git branch and checkout changes
+        binding.countdownProgressBar.progress = onePercent * 10
     }
 
     private fun finishAlert() {
