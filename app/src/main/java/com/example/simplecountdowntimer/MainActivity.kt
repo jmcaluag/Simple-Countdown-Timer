@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         binding.resetButton.setOnClickListener { resetTime() }
         binding.root.setOnClickListener { resetFocus(it) }
 
+        binding.countdownProgressBar.max = 1000 // Precision of progress bar is increased to 1000. Better for showing visual progression.
+
         timeLeft = defaultTime
         referenceTime = defaultTime
         updateTimer(timeLeft)
@@ -144,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         val timeLeftSeconds = timeLeftMilliseconds / 1000
         val referenceTimeSeconds = referenceTime / 1000
         val difference = referenceTimeSeconds - timeLeftSeconds
-        val factor: Double = 100 / referenceTimeSeconds.toDouble()
+        val factor: Double = 1000 / referenceTimeSeconds.toDouble() // Finding one second percent increase. E.g. 100% / 10 seconds = 10%. "1000%" / 10 seconds = "100%". 1000 is used to increase precision for the progress bar.
         binding.percentageIndicator.text = (difference * factor).toInt().toString()
         binding.countdownProgressBar.progress = (difference * factor).toInt()
     }
