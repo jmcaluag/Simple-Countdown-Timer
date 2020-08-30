@@ -14,12 +14,16 @@ import com.example.simplecountdowntimer.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    // Timer values
     private var defaultTime: Long = 60000 // Default time at start up
+    private var userTime: Long = 0 // User set time in minutes.
     private var timeLeft: Long = 0 // in milliseconds
     private var referenceTime: Long = 0 // Used for progress bar.
+
+    // Timer settings & statuses
     private var timerRunning: Boolean = false // Initial state: timer is NOT running.
     private var userSetTime: Boolean = false // Indicates if the user set a time or not.
-    private var userTime: Long = 0 // User set time in minutes.
     private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +39,6 @@ class MainActivity : AppCompatActivity() {
 
         timeLeft = defaultTime
         referenceTime = defaultTime
-        binding.countdownProgressBar.max = referenceTime.toInt()
-
         updateTimer(timeLeft)
     }
 
@@ -54,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             userTime = setTime.toLong() * 60000
             timeLeft = userTime
             referenceTime = userTime
-            binding.countdownProgressBar.max = referenceTime.toInt()
             updateTimer(timeLeft)
             binding.setTimer.text.clear()
         }
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         timeLeftDisplay += seconds
 
         binding.timeDisplay.text = timeLeftDisplay
-        updatePercentIndicator(seconds * 1000)
+        updateProgressBar(time)
 
         if (minutes == 0L && seconds == 0L) {
             //TODO: Add a delay before calling this function so that the progress circle can be 100% full
@@ -138,11 +139,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updatePercentIndicator(seconds: Long) {
+    private fun updateProgressBar(timeLeftMilliseconds: Long) {
         //TODO: Increase percentage on first second countdown. Example: If set for 1 minute, progress bar increase on the 58th second instead of 59.
-        val secondProgress = referenceTime - seconds
-        binding.percentageIndicator.text = secondProgress.toString()
-        binding.countdownProgressBar.progress = secondProgress.toInt()
+        val timeLeftSeconds = timeLeftMilliseconds / 1000
+        val referenceTimeSeconds = referenceTime / 1000
+        val difference = referenceTimeSeconds - timeLeftSeconds
+        val factor: Double = 100 / referenceTimeSeconds.toDouble()
+        binding.percentageIndicator.text = (difference * factor).toInt().toString()
+        binding.countdownProgressBar.progress = (difference * factor).toInt()
     }
 
     private fun finishAlert() {
