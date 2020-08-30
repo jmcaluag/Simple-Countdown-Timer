@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var defaultTime: Long = 10000 // Default time at start up
-    private var onePercent = 0
     private var timeLeft: Long = 0 // in milliseconds
     private var referenceTime: Long = 0 // Used for progress bar.
     private var timerRunning: Boolean = false // Initial state: timer is NOT running.
@@ -23,20 +22,17 @@ class MainActivity : AppCompatActivity() {
     private var userTime: Long = 0 // User set time in minutes.
     private lateinit var countDownTimer: CountDownTimer
 
+    private var secondCountUp = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.startButton.text = "Start"
-
         binding.percentageIndicator.text = "0"
-
         binding.setTimer.setOnClickListener { setTimer(it) }
-
         binding.startButton.setOnClickListener { startStop() }
-
         binding.resetButton.setOnClickListener { resetTime() }
-
         binding.root.setOnClickListener { resetFocus(it) }
 
         timeLeft = defaultTime
@@ -86,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         countDownTimer = object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(p0: Long) {
                 timeLeft = p0
-                onePercent++
+                secondCountUp++
                 updateTimer(timeLeft)
             }
 
@@ -113,13 +109,10 @@ class MainActivity : AppCompatActivity() {
         timerRunning = false
         binding.startButton.text = "Start"
         binding.resetButton.visibility = View.GONE
-        onePercent = 0
-        binding.percentageIndicator.text = onePercent.toString()
         updateProgressCircle(timeLeft)
     }
 
     private fun updateTimer(time: Long) {
-        updateProgressCircle(time)
 
         val minutes = time / 60000
         val seconds = time % 60000 / 1000
@@ -139,23 +132,17 @@ class MainActivity : AppCompatActivity() {
         timeLeftDisplay += seconds
 
         binding.timeDisplay.text = timeLeftDisplay
-        binding.percentageIndicator.text = onePercent.toString()
+        binding.percentageIndicator.text = secondCountUp.toString()
 
         if (minutes == 0L && seconds == 0L) {
-            updateProgressCircle(0)
             //TODO: Add a delay before calling this function so that the progress circle can be 100% full
             finishAlert()
         }
     }
 
     private fun updateProgressCircle(time: Long) {
-
         //TODO: Increase percentage on first second countdown. Example: If set for 1 minute, progress bar increase on the 58th second instead of 59.
 
-//        val timeDifference: Long = referenceTime - time // time difference is in 1000 milliseconds.
-//        val progressPercentage: Double = timeDifference / referenceTime.toDouble() * 1000 // converts time difference into a percentage for progress bar
-
-        binding.countdownProgressBar.progress = onePercent * 10
     }
 
     private fun finishAlert() {
