@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.startButton.text = "Start"
-        binding.percentageIndicator.text = "0"
         binding.setTimer.setOnClickListener { setTimer(it) }
         binding.startButton.setOnClickListener { startStop() }
         binding.resetButton.setOnClickListener { resetTime() }
@@ -147,7 +146,6 @@ class MainActivity : AppCompatActivity() {
         val referenceTimeSeconds = referenceTime / 1000
         val difference = referenceTimeSeconds - timeLeftSeconds
         val factor: Double = 1000 / referenceTimeSeconds.toDouble() // Finding one second percent increase. E.g. 100% / 10 seconds = 10%. "1000%" / 10 seconds = "100%". 1000 is used to increase precision for the progress bar.
-        binding.percentageIndicator.text = (difference * factor).toInt().toString()
         binding.countdownProgressBar.progress = (difference * factor).toInt()
     }
 
