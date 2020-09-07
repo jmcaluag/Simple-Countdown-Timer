@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.simplecountdowntimer.databinding.FragmentCountdownTimerBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +51,9 @@ class CountdownTimerFragment : Fragment() {
         binding.startButton.setOnClickListener { startStop() }
         binding.resetButton.setOnClickListener { resetTime() }
         binding.root.setOnClickListener { resetFocus(it) }
+        binding.timeDisplay.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_countdownTimerFragment_to_setTimeFragment)
+        }
 
         binding.countdownProgressBar.max = 1000 // Precision of progress bar is increased to 1000. Better for showing visual progression.
 

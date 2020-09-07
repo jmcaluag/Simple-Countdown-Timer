@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/countdownTimerFragment"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <fragment
+        android:id="@+id/countdownTimerFragment"
+        android:name="com.example.simplecountdowntimer.CountdownTimerFragment"
+        android:label="CountdownTimerFragment"
+        tools:layout="@layout/fragment_countdown_timer">
+        <action
+            android:id="@+id/action_countdownTimerFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setTimeFragment"
+        android:name="com.example.simplecountdowntimer.SetTimeFragment"
+        android:label="SetTimeFragment"
+        tools:layout="@layout/fragment_set_time" />
+</navigation>
