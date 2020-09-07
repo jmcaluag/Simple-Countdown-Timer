@@ -171,7 +171,7 @@ class CountdownTimerFragment : Fragment() {
     }
 
     private fun finishAlert() {
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireActivity())
         builder.setMessage("Time's up!")
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id -> })
         builder.show()

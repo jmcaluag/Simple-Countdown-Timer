@@ -17,5 +17,11 @@
         android:id="@+id/setTimeFragment"
         android:name="com.example.simplecountdowntimer.SetTimeFragment"
         android:label="SetTimeFragment"
-        tools:layout="@layout/fragment_set_time" />
+        tools:layout="@layout/fragment_set_time" >
+        <action
+            android:id="@+id/action_setTimeFragment_to_countdownTimerFragment"
+            app:destination="@id/countdownTimerFragment"
+            app:popUpTo="@id/countdownTimerFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>
